@@ -8,7 +8,10 @@
         x:Class="ImageViewer.Views.MainWindow"
         x:DataType="vm:MainWindowViewModel"
         Icon="/Assets/avalonia-logo.ico"
-        Title="ImageViewer">
+        Title="ImageViewer"
+        CanResize="False"
+        Width="800"
+        Height="450">
 
     <Design.DataContext>
         <!-- This only sets the DataContext for the previewer in an IDE,
@@ -16,6 +19,6 @@
         <vm:MainWindowViewModel/>
     </Design.DataContext>
 
-	<views:ImagesView></views:ImagesView>
+	<views:ImagesView DataContext="{Binding ImagesVM}"></views:ImagesView>
 
 </Window>

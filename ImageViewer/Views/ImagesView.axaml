@@ -2,30 +2,72 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:converters="using:ImageViewer.Converters"
+             xmlns:models="using:ImageViewer.Models"
              xmlns:material="using:Material.Icons.Avalonia"
              mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+             
              x:Class="ImageViewer.Views.ImagesView">
 
-	<Grid RowDefinitions="Auto, *, Auto" ColumnDefinitions="*, Auto">
-		<TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding _path}"></TextBlock>
-		<Button Grid.Row="0" Grid.Column="1"  Command="{Binding SelectImages}">
-			<material:MaterialIcon Kind="FolderMultipleImage"/>
-		</Button>
-		<ListBox Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2">
+  <UserControl.Resources>
+    <converters:FileSizeConverter x:Key="FileSizeConverter"></converters:FileSizeConverter>
+  </UserControl.Resources>
+	<Grid RowDefinitions="auto, *, auto">
+
+    <StackPanel Grid.Row="0" Orientation="Horizontal">
+
+      <!--file picker-->
+      <Button Command="{Binding PickImagesCommand}" ToolTip.Tip="Выбрать">
+        <material:MaterialIcon Kind="FolderMultipleImage"/>
+      </Button>
+
+      <!--serialize-->
+      <Button Command="{Binding SerializeImagesCommand}" ToolTip.Tip="Сериализовать">
+        <material:MaterialIcon Kind="FileUploadOutline"/>
+      </Button>
+
+      <!--deserialize-->
+      <Button Command="{Binding DeserializeImagesCommand}" ToolTip.Tip="Десериализовать">
+        <material:MaterialIcon Kind="FileDownloadOutline"/>
+      </Button>
+      
+    </StackPanel>
+    
+    <!--images view-->
+		<ListBox Grid.Row="1" ItemsSource="{Binding Images}">
 			<ListBox.DataTemplates>
-				<DataTemplate>
-					<TextBlock></TextBlock>
+				<DataTemplate DataType="{x:Type models:ImageModel}">
+          <Grid ColumnDefinitions="200, *" MaxHeight="100">
+            <Image Grid.Column="0" Source="{Binding Image}" HorizontalAlignment="Left"/>
+            <Grid Grid.Column="1" ColumnDefinitions="auto, *">
+              
+              <StackPanel Grid.Column="0" Orientation="Vertical" Margin="0, 0, 5, 0">
+                <TextBlock>Имя</TextBlock>
+                <TextBlock>Размер</TextBlock>
+                <TextBlock>Дата создания</TextBlock>
+              </StackPanel>
+              
+              <StackPanel Grid.Column="1" Orientation="Vertical">
+                <TextBlock Text="{Binding Metadata.FileName}"></TextBlock>
+                <TextBlock Text="{Binding Metadata.Size, Converter={StaticResource FileSizeConverter}}"></TextBlock>
+                <TextBlock Text="{Binding Metadata.CreationTime}"></TextBlock>
+              </StackPanel>
+
+
+            </Grid>
+            <!--<StackPanel Grid.Column="1" Orientation="Vertical">
+              <TextBlock Text="{Binding Metadata.FileName}"></TextBlock>
+              <TextBlock Text="{Binding Metadata.Size}"></TextBlock>
+            </StackPanel>-->
+          </Grid>
 				</DataTemplate>
 			</ListBox.DataTemplates>
 		</ListBox>
-		<TextBlock  Grid.Row="2" Grid.Column="0" ></TextBlock>
-		<Button Grid.Row="2" Grid.Column="1">
-			<material:MaterialIcon Kind="FileUploadOutline"/>
-		</Button>
-		<TextBlock  Grid.Row="2" Grid.Column="0" ></TextBlock>
-		<Button Grid.Row="2" Grid.Column="1">
-			<material:MaterialIcon Kind="FileDownloadOutline"/>
-		</Button>
+
+    <!--status bar-->
+    <DockPanel Grid.Row="2">
+      <TextBlock DockPanel.Dock="Left" Text="{Binding Message}"></TextBlock>
+    </DockPanel>
 	</Grid>
 
 </UserControl>

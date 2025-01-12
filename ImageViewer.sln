@@ -11,6 +11,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageViewer", "ImageViewer\ImageViewer.csproj", "{728F2D4D-C760-43BD-A868-49E1333C5F84}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{219A3F08-E314-4004-A33C-2844D454B74A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.UnitTests", "Domain.UnitTests\Domain.UnitTests.csproj", "{74414FFA-A106-4075-B4C0-5AC89B755284}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,9 +37,16 @@ Global
 		{728F2D4D-C760-43BD-A868-49E1333C5F84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{728F2D4D-C760-43BD-A868-49E1333C5F84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{728F2D4D-C760-43BD-A868-49E1333C5F84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{74414FFA-A106-4075-B4C0-5AC89B755284}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{74414FFA-A106-4075-B4C0-5AC89B755284}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{74414FFA-A106-4075-B4C0-5AC89B755284}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{74414FFA-A106-4075-B4C0-5AC89B755284}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{74414FFA-A106-4075-B4C0-5AC89B755284} = {219A3F08-E314-4004-A33C-2844D454B74A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {92B5D1DC-98C2-465E-A3F6-8DAFD91ECE8B}

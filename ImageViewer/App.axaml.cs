@@ -15,6 +15,7 @@ using System.Reflection;
 using Domain.UseCases;
 using Domain.Models;
 using ImageViewer.Services;
+using Avalonia.Controls;
 
 namespace ImageViewer
 {
@@ -27,18 +28,18 @@ namespace ImageViewer
 
         public override void OnFrameworkInitializationCompleted()
         {
-            var collection = RegisterServices();
-            
-            var services = collection.BuildServiceProvider();
+            var services = ConfigureServices();
             
             if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
             {
                 // Avoid duplicate validations from both Avalonia and the CommunityToolkit. 
                 // More info: https://docs.avaloniaui.net/docs/guides/development-guides/data-validation#manage-validationplugins
                 DisableAvaloniaDataAnnotationValidation();
-                desktop.MainWindow = new MainWindow
+                
+                var mainVM = services.GetRequiredService<MainWindowViewModel>();
+                desktop.MainWindow = new MainWindow()
                 {
-                    DataContext = services.GetRequiredService<MainWindowViewModel>(),
+                    DataContext = mainVM,
                 };
             }
 
@@ -58,9 +59,18 @@ namespace ImageViewer
             }
         }
 
-        private static ServiceCollection RegisterServices()
+        private static ServiceProvider ConfigureServices()
         {
             var collection = new ServiceCollection();
+
+            // VMs
+            collection.AddSingleton<MainWindowViewModel>();
+            collection.AddSingleton<ImagesViewModel>();
+
+            // Views
+            //collection.AddSingleton<MainWindow>();
+            collection.AddSingleton<Window, MainWindow>();
+
             // Repository
             collection.AddSingleton<IImagesRepository, ImagesRepository>();
 
@@ -68,15 +78,14 @@ namespace ImageViewer
             collection.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(Assembly.GetExecutingAssembly()));
 
             // Commands
-            collection.AddTransient<IRequestHandler<GetImagesCommand, ImagesAggregate>, GetImagesHandler>();
-            
+            collection.AddSingleton<IRequestHandler<GetImagesCommand, ImagesAggregate?>, GetImagesHandler>();
+            collection.AddSingleton<IRequestHandler<SaveImagesCommand, bool>, SaveImagesHandler>();
+
             // Services
+            collection.AddSingleton<IPickerService, PickerService>();
             collection.AddSingleton<IImagesService, ImagesService>();
-            collection.AddSingleton<IFolderPickerService, FolderPickerService>();
-            collection.AddSingleton<IImagesPickerService, ImagesPickerService>();
             
-            collection.AddTransient<MainWindowViewModel>();
-            return collection;
+            return collection.BuildServiceProvider();
         }
     }
 }

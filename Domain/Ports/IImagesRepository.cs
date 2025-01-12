@@ -5,7 +5,7 @@ namespace Domain.Ports
     public interface IImagesRepository
     {
         void ChangeAddress(string path);
-        Task<ImagesAggregate> GetAsync();
-        Task SaveAsync(ImagesAggregate images);
+        Task<ImagesAggregate?> GetAsync();
+        Task<bool> SaveAsync(ImagesAggregate images);
     }
 }

@@ -6,7 +6,7 @@ namespace ImageViewer.Models
 {
     public class MetadataModel
     {
-        private MetadataModel(string filename, int size, DateTime creationTime)
+        private MetadataModel(string filename, long size, DateTime creationTime)
         {
             FileName = filename;
             Size = size;
@@ -14,10 +14,10 @@ namespace ImageViewer.Models
         }
         
         public string FileName { get; }
-        public int Size { get; }
+        public long Size { get; }
         public DateTime CreationTime { get; }
 
-        public static Result<MetadataModel, Error> Create(string filename, int size, DateTime creationTime)
+        public static Result<MetadataModel, Error> Create(string filename, long size, DateTime creationTime)
         {
             if (string.IsNullOrWhiteSpace(filename)) return GeneralErrors.ValueIsRequired(nameof(filename));
             if (size < 0) return GeneralErrors.ValueIsInvalid(nameof(size));

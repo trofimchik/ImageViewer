@@ -2,19 +2,18 @@
 using CSharpFunctionalExtensions;
 using Domain.Model;
 using System.Collections.ObjectModel;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Domain.Models
 {
     public class ImagesAggregate
     {
-        private readonly List<ImageEntity> _images = [];
-
-        private ImagesAggregate()
+        public ImagesAggregate()
         {
-            Items = _images.AsReadOnly();
+
         }
 
-        public ReadOnlyCollection<ImageEntity> Items { get; }
+        public List<ImageEntity> Items { get; set; } = [];
 
         public static Result<ImagesAggregate, Error> Create() => new ImagesAggregate();
 
@@ -22,7 +21,7 @@ namespace Domain.Models
         {
             if (image is null) return GeneralErrors.ValueIsRequired(nameof(image));
 
-            _images.Add(image);
+            Items.Add(image);
 
             return UnitResult.Success<Error>();
         }

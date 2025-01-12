@@ -1,22 +1,28 @@
 ﻿using Common;
 using CSharpFunctionalExtensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Domain.Model
 {
     public class ImageMetadata : ValueObject
     {
-        private ImageMetadata(string fileName, int size, DateTime creationTime)
+        [ExcludeFromCodeCoverage]
+        public ImageMetadata()
+        {
+            
+        }
+        private ImageMetadata(string fileName, long size, DateTime creationTime)
         {
             FileName = fileName;
             Size = size;
             CreationTime = creationTime;
         }
 
-        public string FileName { get; }
-        public int Size { get; }
-        public DateTime CreationTime { get; }
+        public string FileName { get; set; }
+        public long Size { get; set; }
+        public DateTime CreationTime { get; set; }
 
-        public static Result<ImageMetadata, Error> Create(string filename, int size, DateTime creationTime)
+        public static Result<ImageMetadata, Error> Create(string filename, long size, DateTime creationTime)
         {
             if (string.IsNullOrWhiteSpace(filename)) return GeneralErrors.ValueIsRequired(nameof(filename));
             if (size < 0) return GeneralErrors.ValueIsInvalid(nameof(size));

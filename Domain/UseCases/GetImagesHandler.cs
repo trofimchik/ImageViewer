@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Domain.UseCases;
 
-public class GetImagesHandler : IRequestHandler<GetImagesCommand, ImagesAggregate>
+public class GetImagesHandler : IRequestHandler<GetImagesCommand, ImagesAggregate?>
 {
     private readonly IImagesRepository _repository;
     
@@ -13,7 +13,7 @@ public class GetImagesHandler : IRequestHandler<GetImagesCommand, ImagesAggregat
         _repository = repository;
     }
     
-    public Task<ImagesAggregate> Handle(GetImagesCommand request, CancellationToken cancellationToken)
+    public Task<ImagesAggregate?> Handle(GetImagesCommand request, CancellationToken cancellationToken)
     {
         _repository.ChangeAddress(request.Path);
         return _repository.GetAsync();

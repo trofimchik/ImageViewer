@@ -1,25 +1,32 @@
 ﻿using Common;
 using CSharpFunctionalExtensions;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Domain.Model
 {
     public class ImageEntity : Entity
     {
-        private ImageEntity(string byte64, ImageMetadata metadata)
+        [ExcludeFromCodeCoverage]
+        public ImageEntity()
         {
-            Byte64 = byte64;
+            
+        }
+
+        private ImageEntity(byte[] bytes, ImageMetadata metadata)
+        {
+            Bytes = bytes;
             Metadata = metadata;
         }
 
-        public string Byte64 { get; }
-        public ImageMetadata Metadata { get; }
+        public byte[] Bytes { get; set; }
+        public ImageMetadata Metadata { get; set; }
 
-        public static Result<ImageEntity, Error> Create(string binaryData, ImageMetadata metadata)
+        public static Result<ImageEntity, Error> Create(byte[] bytes, ImageMetadata metadata)
         {
-            if (string.IsNullOrWhiteSpace(binaryData)) return GeneralErrors.ValueIsRequired(nameof(binaryData));
+            if (bytes.Length == 0) return GeneralErrors.ValueIsRequired(nameof(bytes));
             if (metadata is null) return GeneralErrors.ValueIsRequired(nameof(metadata));
 
-            return new ImageEntity(binaryData, metadata);
+            return new ImageEntity(bytes, metadata);
         }
     }
 }
